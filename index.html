@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרפ-יה - הפעלת הרפיה עמוקה</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --soft-pink: #f8e8ee;
+            --mint: #d4edda;
+            --gold: #d4af37;
+            --deep-teal: #2d5a5a;
+            --cream: #faf8f5;
+            --soft-lavender: #e8e4f0;
+            --warm-gray: #8a8a8a;
+            --ocean-blue: #7eb8c9;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: #ffe4ec;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating particles background */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+            25% { transform: translateY(-30px) translateX(20px) scale(1.1); }
+            50% { transform: translateY(-10px) translateX(-20px) scale(0.9); }
+            75% { transform: translateY(-40px) translateX(10px) scale(1.05); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--mint), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(45, 90, 90, 0.2);
+            animation: breathe 4s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 40px rgba(45, 90, 90, 0.2); }
+            50% { transform: scale(1.1); box-shadow: 0 15px 50px rgba(45, 90, 90, 0.3); }
+        }
+
+        .logo svg {
+            width: 45px;
+            height: 45px;
+            fill: white;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: var(--deep-teal);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--warm-gray);
+            font-weight: 300;
+        }
+
+        /* Status bar */
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 0.75rem;
+            color: var(--warm-gray);
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--deep-teal);
+        }
+
+        /* Main content */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 20px 100px;
+        }
+
+        /* Category tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.7);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-family: 'Heebo', sans-serif;
+            font-size: 0.9rem;
+            color: var(--deep-teal);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--deep-teal), var(--ocean-blue));
+            color: white;
+            box-shadow: 0 5px 20px rgba(45, 90, 90, 0.3);
+        }
+
+        /* Techniques grid */
+        .techniques-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .technique-card {
+            background: rgba(255,255,255,0.85);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .technique-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .technique-card.expanded {
+            background: rgba(255,255,255,0.95);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .card-icon.breathing { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+        .card-icon.vagus { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+        .card-icon.movement { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+        .card-icon.senses { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+        .card-icon.mind { background: linear-gradient(135deg, #ede7f6, #d1c4e9); }
+        .card-icon.body { background: linear-gradient(135deg, #e0f7fa, #b2ebf2); }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--deep-teal);
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--warm-gray);
+        }
+
+        .card-arrow {
+            font-size: 1.2rem;
+            color: var(--warm-gray);
+            transition: transform 0.3s ease;
+        }
+
+        .technique-card.expanded .card-arrow {
+            transform: rotate(180deg);
+        }
+
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.3s ease;
+        }
+
+        .technique-card.expanded .card-content {
+            max-height: 2000px;
+            padding-top: 20px;
+        }
+
+        .technique-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .technique-item {
+            background: rgba(45, 90, 90, 0.05);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .technique-item:hover {
+            background: rgba(45, 90, 90, 0.1);
+        }
+
+        .technique-item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .technique-item-info {
+            flex: 1;
+        }
+
+        .technique-item-name {
+            font-weight: 500;
+            color: var(--deep-teal);
+            margin-bottom: 3px;
+        }
+
+        .technique-item-desc {
+            font-size: 0.8rem;
+            color: var(--warm-gray);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--gold), #e6c566);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-family: 'Heebo', sans-serif;
+            font-size: 0.85rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .fav-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.3rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+        }
+
+        .fav-btn:hover {
+            color: var(--gold);
+            transform: scale(1.2);
+        }
+
+        .fav-btn.active {
+            color: var(--gold);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalIn 0.4s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 30px 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--deep-teal);
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitle {
+            color: var(--warm-gray);
+            font-size: 0.9rem;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #eee;
+        }
+
+        /* Breathing exercise */
+        .breathing-exercise {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .breath-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--mint), var(--ocean-blue));
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(45, 90, 90, 0.3);
+            transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
+            text-align: center;
+        }
+
+        .breath-circle.inhale {
+            box-shadow: 0 30px 80px rgba(45, 90, 90, 0.4);
+        }
+
+        .breath-circle.exhale {
+            box-shadow: 0 20px 60px rgba(45, 90, 90, 0.3);
+        }
+
+        .breath-circle.hold {
+            /* נשאר באותו מצב */
+        }
+
+        .breath-circle.stopped {
+            transform: scale(1) !important;
+            transition: none;
+        }
+
+        .breath-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .breath-timer {
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--deep-teal);
+            margin-bottom: 10px;
+        }
+
+        .breath-instruction {
+            font-size: 1.2rem;
+            color: var(--warm-gray);
+            margin-bottom: 30px;
+        }
+
+        .breath-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .breath-btn {
+            padding: 15px 35px;
+            border-radius: 30px;
+            border: none;
+            font-family: 'Heebo', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .breath-btn.primary {
+            background: linear-gradient(135deg, var(--deep-teal), var(--ocean-blue));
+            color: white;
+        }
+
+        .breath-btn.secondary {
+            background: #f5f5f5;
+            color: var(--deep-teal);
+        }
+
+        .breath-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Pattern selector */
+        .pattern-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .pattern-option {
+            background: #f8f8f8;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pattern-option:hover {
+            border-color: var(--ocean-blue);
+        }
+
+        .pattern-option.active {
+            border-color: var(--deep-teal);
+            background: rgba(45, 90, 90, 0.05);
+        }
+
+        .pattern-name {
+            font-weight: 500;
+            color: var(--deep-teal);
+            margin-bottom: 5px;
+        }
+
+        .pattern-ratio {
+            font-size: 0.8rem;
+            color: var(--warm-gray);
+        }
+
+        /* Timer exercise */
+        .timer-exercise {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            font-weight: 300;
+            color: var(--deep-teal);
+            margin-bottom: 20px;
+        }
+
+        .timer-message {
+            font-size: 1.1rem;
+            color: var(--warm-gray);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Progress indicator */
+        .session-progress {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: var(--warm-gray);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--mint), var(--deep-teal));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Tips section */
+        .tips-section {
+            background: rgba(45, 90, 90, 0.03);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .tips-title {
+            font-weight: 500;
+            color: var(--deep-teal);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--warm-gray);
+        }
+
+        .tip-icon {
+            color: var(--gold);
+        }
+
+        /* Visualization */
+        .visualization {
+            width: 100%;
+            height: 200px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(126, 184, 201, 0.3) 0%, transparent 70%);
+            animation: wave 8s infinite ease-in-out;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+        }
+
+        /* Quick actions */
+        .quick-actions {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(255,255,255,0.9);
+            padding: 15px 25px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+
+        .quick-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--mint), var(--ocean-blue));
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quick-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-btn.sos {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        }
+
+        .quick-btn.favorite {
+            background: linear-gradient(135deg, var(--gold), #e6c566);
+        }
+
+        /* Audio visualization */
+        .audio-viz {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 60px;
+            margin: 20px 0;
+        }
+
+        .audio-bar {
+            width: 6px;
+            background: linear-gradient(to top, var(--mint), var(--deep-teal));
+            border-radius: 3px;
+            animation: audioWave 1s infinite ease-in-out;
+        }
+
+        @keyframes audioWave {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+
+        /* Gratitude list */
+        .gratitude-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            font-family: 'Heebo', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .gratitude-input:focus {
+            outline: none;
+            border-color: var(--ocean-blue);
+        }
+
+        .gratitude-list {
+            list-style: none;
+        }
+
+        .gratitude-item {
+            background: rgba(45, 90, 90, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .gratitude-heart {
+            color: #ff6b6b;
+        }
+
+        .delete-gratitude-btn {
+            background: transparent;
+            border: none;
+            color: #ccc;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .delete-gratitude-btn:hover {
+            background: #ffebee;
+            color: #e57373;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .category-tabs { gap: 8px; }
+            .tab-btn { padding: 10px 15px; font-size: 0.8rem; }
+            .technique-card { padding: 20px; }
+            .card-icon { width: 45px; height: 45px; font-size: 1.5rem; }
+            .quick-actions { padding: 12px 20px; }
+            .quick-btn { width: 45px; height: 45px; }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Reset button styles */
+        .reset-btn {
+            background: #f5f5f5;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-family: 'Heebo', sans-serif;
+            font-size: 0.85rem;
+            color: var(--warm-gray);
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #eee;
+        }
+
+        .reset-app-btn {
+            background: rgba(255,255,255,0.7);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-family: 'Heebo', sans-serif;
+            font-size: 0.8rem;
+            color: var(--warm-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-app-btn:hover {
+            background: rgba(255,255,255,0.9);
+            color: var(--deep-teal);
+        }
+
+        /* SOS Numbers styles */
+        .sos-numbers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sos-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(45, 90, 90, 0.05);
+            border-radius: 16px;
+            padding: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sos-item:hover {
+            background: rgba(45, 90, 90, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .sos-info {
+            flex: 1;
+        }
+
+        .sos-name {
+            font-weight: 500;
+            color: var(--deep-teal);
+            margin-bottom: 3px;
+        }
+
+        .sos-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold);
+            direction: ltr;
+        }
+    </style>
+</head>
+<body>
+    <!-- בס"ד -->
+    <div style="position: absolute; top: 10px; right: 15px; font-size: 0.9rem; color: var(--warm-gray);">בס"ד</div>
+
+    <!-- Floating particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>הרפ-יה</h1>
+        <p class="subtitle">הפעלת המערכת הפראסימפתטית • הרפיה עמוקה</p>
+    </header>
+
+    <!-- Status bar -->
+    <div class="status-bar">
+        <div class="status-item">
+            <div class="status-label">תרגולים היום</div>
+            <div class="status-value" id="todayCount">0</div>
+        </div>
+        <div class="status-item">
+            <div class="status-label">דקות הרפיה</div>
+            <div class="status-value" id="totalMinutes">0</div>
+        </div>
+        <div class="status-item">
+            <div class="status-label">רצף ימים</div>
+            <div class="status-value" id="streak">0</div>
+        </div>
+    </div>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button class="reset-app-btn" onclick="doReset()">🔄 איפוס נתונים</button>
+    </div>
+
+    <!-- Main content -->
+    <main class="main-content">
+        <!-- Category tabs -->
+        <div class="category-tabs">
+            <button class="tab-btn active" data-category="all">הכל</button>
+            <button class="tab-btn" data-category="breathing">נשימה</button>
+            <button class="tab-btn" data-category="vagus">עצב הוואגוס</button>
+            <button class="tab-btn" data-category="movement">תנועה</button>
+            <button class="tab-btn" data-category="senses">חושים</button>
+            <button class="tab-btn" data-category="mind">מיינד</button>
+        </div>
+
+        <!-- Techniques container -->
+        <div class="techniques-container" id="techniquesContainer">
+            <!-- Cards will be generated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Quick actions -->
+    <div class="quick-actions">
+        <button class="quick-btn sos" onclick="showSOSNumbers()" title="מספרי חירום">🆘</button>
+        <button class="quick-btn" onclick="startQuickBreathing()" title="הרגעה מהירה">🌬️</button>
+        <button class="quick-btn favorite" onclick="showFavorites()" title="מועדפים">⭐</button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <div class="modal-header" id="modalHeader">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === GLOBAL VARIABLES FIRST ===
+        var breathingActive = false;
+        var currentPattern = [4,4,4,4];
+        var breathPhase = 0;
+        var breathCount = 0;
+        var totalBreathTime = 0;
+        var breathingInterval = null;
+        var timerActive = false;
+        var timerSeconds = 0;
+        var timerInterval = null;
+        var appData = JSON.parse(localStorage.getItem('parasympatheticData')) || {
+            todayCount: 0,
+            totalMinutes: 0,
+            streak: 0,
+            lastDate: null
+        };
+        var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        var gratitudeList = JSON.parse(localStorage.getItem('gratitudeList')) || [];
+
+        // === COPY AND CALL FUNCTION - MUST BE FIRST ===
+        function copySosNumber(number, event) {
+            // במחשב - העתק ועצור את הקישור
+            if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                event.preventDefault();
+                var textarea = document.createElement('textarea');
+                textarea.value = number;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                textarea.setSelectionRange(0, 99999);
+                try {
+                    document.execCommand('copy');
+                    alert('✓ המספר ' + number + ' הועתק!');
+                } catch(e) {
+                    alert('המספר: ' + number);
+                }
+                document.body.removeChild(textarea);
+            }
+            // בטלפון - הקישור tel: יעבוד אוטומטית
+        }
+
+        // === GLOBAL FUNCTIONS - חייב להיות ראשון! ===
+        function doReset() {
+            alert('מאפס את כל הנתונים...');
+            localStorage.removeItem('parasympatheticData');
+            localStorage.removeItem('favorites');
+            localStorage.removeItem('gratitudeList');
+            location.reload();
+        }
+
+        function doDeleteGratitude(index) {
+            alert('מוחק...');
+            gratitudeList.splice(index, 1);
+            localStorage.setItem('gratitudeList', JSON.stringify(gratitudeList));
+            openGratitudeModal();
+        }
+
+        function doRemoveFavorite(id) {
+            alert('מסיר ממועדפים...');
+            var idx = favorites.indexOf(id);
+            if (idx > -1) {
+                favorites.splice(idx, 1);
+            }
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            showFavorites();
+        }
+
+        function doStartBreathing() {
+            // Toggle breathing directly here
+            if (breathingActive) {
+                // Stop breathing
+                breathingActive = false;
+                clearInterval(breathingInterval);
+                
+                document.getElementById('breathStartBtn').textContent = 'התחל';
+                document.getElementById('breathText').innerHTML = 'סיום';
+                document.getElementById('breathInstruction').textContent = breathCount + ' מחזורי נשימה';
+                
+                var circle = document.getElementById('breathCircle');
+                circle.classList.remove('inhale', 'exhale', 'hold');
+                circle.classList.add('stopped');
+                circle.style.transform = 'scale(1)';
+
+                // Update stats
+                var minutes = Math.ceil(totalBreathTime / 60);
+                appData.todayCount++;
+                appData.totalMinutes += minutes;
+                appData.streak = Math.max(1, appData.streak);
+                appData.lastDate = new Date().toDateString();
+                saveData();
+                updateStats();
+            } else {
+                // Start breathing
+                breathingActive = true;
+                breathPhase = 0;
+                breathCount = 0;
+                totalBreathTime = 0;
+
+                var activePattern = document.querySelector('.pattern-option.active');
+                currentPattern = activePattern.dataset.pattern.split(',').map(Number);
+
+                var circle = document.getElementById('breathCircle');
+                circle.classList.remove('stopped');
+                circle.style.transform = 'scale(1)';
+
+                document.getElementById('breathStartBtn').textContent = 'עצור';
+                runBreathingCycle();
+            }
+        }
+
+        function doStartTimer(duration) {
+            // Toggle timer directly here
+            if (timerActive) {
+                // Stop timer
+                timerActive = false;
+                clearInterval(timerInterval);
+                document.getElementById('timerStartBtn').textContent = 'התחל';
+            } else {
+                // Start timer
+                timerActive = true;
+                timerSeconds = duration;
+                document.getElementById('timerStartBtn').textContent = 'עצור';
+
+                timerInterval = setInterval(function() {
+                    timerSeconds--;
+                    document.getElementById('timerDisplay').textContent = formatTime(timerSeconds);
+
+                    if (timerSeconds <= 0) {
+                        timerActive = false;
+                        clearInterval(timerInterval);
+                        document.getElementById('timerStartBtn').textContent = 'התחל';
+                        document.getElementById('timerDisplay').textContent = '✓ סיימת!';
+                        
+                        appData.todayCount++;
+                        appData.totalMinutes += Math.ceil(duration / 60);
+                        appData.streak = Math.max(1, appData.streak);
+                        appData.lastDate = new Date().toDateString();
+                        saveData();
+                        updateStats();
+                    }
+                }, 1000);
+            }
+        }
+
+        // Reset function defined at the START
+        function resetApp() {
+            if (confirm('האם לאפס את כל הנתונים?')) {
+                localStorage.removeItem('parasympatheticData');
+                localStorage.removeItem('favorites');
+                localStorage.removeItem('gratitudeList');
+                alert('הנתונים אופסו בהצלחה!');
+                location.reload();
+            }
+        }
+
+        // Techniques data
+        const techniques = [
+            {
+                id: 'breathing',
+                icon: '🌬️',
+                title: 'טכניקות נשימה',
+                subtitle: 'הכלי החזק ביותר להרגעת מערכת העצבים',
+                category: 'breathing',
+                items: [
+                    { id: 'box', icon: '⬜', name: 'נשימת קופסה', desc: '4-4-4-4 - מאזנת ומרגיעה', type: 'breathing', pattern: [4,4,4,4] },
+                    { id: '478', icon: '🌙', name: 'נשימת 4-7-8', desc: 'מושלמת להירדמות', type: 'breathing', pattern: [4,7,8,0] },
+                    { id: 'hedva', icon: '✨', name: 'נשימת חדוה', desc: '8-4-6-5 - הרגעה עמוקה', type: 'breathing', pattern: [8,4,6,5] },
+                    { id: 'long', icon: '🌊', name: 'נשיפה ארוכה', desc: 'נשיפה כפולה מהשאיפה', type: 'breathing', pattern: [4,0,8,0] },
+                    { id: 'belly', icon: '🎈', name: 'נשימה בטנית', desc: 'נשימה סרעפתית עמוקה', type: 'guided', guide: 'belly' },
+                    { id: 'coherent', icon: '💚', name: 'נשימה קוהרנטית', desc: '5-6 נשימות בדקה', type: 'breathing', pattern: [5,0,5,0] }
+                ]
+            },
+            {
+                id: 'vagus',
+                icon: '⚡',
+                title: 'גירוי עצב הוואגוס',
+                subtitle: 'עצב ההרפיה המרכזי של הגוף',
+                category: 'vagus',
+                items: [
+                    { id: 'cold', icon: '❄️', name: 'מים קרים', desc: 'שטיפת פנים או מקלחת קרה', type: 'timer', duration: 30, message: 'שטוף/י את הפנים במים קרים או הפעל/י מקלחת קרה על הצוואר' },
+                    { id: 'humming', icon: '🎵', name: 'זמזום', desc: 'זמזום עמוק מגרה את הוואגוס', type: 'timer', duration: 60, message: 'זמזם/י צליל עמוק "הממממם" והרגיש/י את הרטט בחזה ובגרון' },
+                    { id: 'gargle', icon: '💧', name: 'גרגור מים', desc: 'מפעיל את הגרון והוואגוס', type: 'timer', duration: 30, message: 'גרגר/י מים בעוצמה - הרגש/י את התחושה בגרון' },
+                    { id: 'massage', icon: '👂', name: 'עיסוי אוזניים', desc: 'עיסוי עדין לאוזניים ולצוואר', type: 'guided', guide: 'ear' },
+                    { id: 'singing', icon: '🎤', name: 'שירה', desc: 'שירה מגרה את עצב הוואגוס', type: 'timer', duration: 120, message: 'שיר/י שיר אהוב - רצוי בקול מלא וחזק' }
+                ]
+            },
+            {
+                id: 'movement',
+                icon: '🧘',
+                title: 'תנועה ומגע',
+                subtitle: 'שחרור מתח פיזי',
+                category: 'movement',
+                items: [
+                    { id: 'stretch', icon: '🤸', name: 'מתיחות איטיות', desc: 'מתיחות עדינות לשחרור', type: 'guided', guide: 'stretch' },
+                    { id: 'selfmassage', icon: '🙌', name: 'עיסוי עצמי', desc: 'עיסוי ידיים, צוואר וכתפיים', type: 'guided', guide: 'selfmassage' },
+                    { id: 'jacobson', icon: '💪', name: 'שחרור ג׳ייקובסון', desc: 'מתח ושחרור שרירים', type: 'guided', guide: 'jacobson' },
+                    { id: 'rock', icon: '🪨', name: 'נדנוד עדין', desc: 'תנועת נדנוד מרגיעה', type: 'guided', guide: 'rock' },
+                    { id: 'dance', icon: '💃', name: 'ריקוד חופשי', desc: 'תנועה חופשית לשחרור', type: 'guided', guide: 'dance' },
+                    { id: 'shake', icon: '🫨', name: 'ניעור', desc: 'ניעור הגוף לשחרור מתח', type: 'timer', duration: 60, message: 'נער/י את כל הגוף - ידיים, רגליים, כתפיים. שחרר/י את המתח' },
+                    { id: 'legs', icon: '🦵', name: 'רגליים מורמות', desc: 'שכיבה עם רגליים על הקיר', type: 'timer', duration: 180, message: 'שכב/י עם הרגליים מורמות על הקיר. נשום/י עמוק.' }
+                ]
+            },
+            {
+                id: 'senses',
+                icon: '👁️',
+                title: 'חושים',
+                subtitle: 'הרגעה דרך החושים',
+                category: 'senses',
+                items: [
+                    { id: 'music', icon: '🎧', name: 'מוזיקה מרגיעה', desc: '432Hz או צלילי טבע', type: 'audio', audioType: 'relaxing' },
+                    { id: 'aroma', icon: '🌸', name: 'ארומתרפיה', desc: 'לבנדר, קמומיל, ורד', type: 'guided', guide: 'aroma' },
+                    { id: 'candle', icon: '🕯️', name: 'התבוננות בנר', desc: 'מיקוד עדין באור נר', type: 'timer', duration: 180, message: 'הדלק/י נר והתבונן/י בלהבה. אפשר/י לעיניים להירגע.' },
+                    { id: 'nature', icon: '🌿', name: 'צלילי טבע', desc: 'גלים, גשם, יער', type: 'audio', audioType: 'nature' },
+                    { id: 'warmth', icon: '☕', name: 'חום', desc: 'משקה חם או שמיכה', type: 'guided', guide: 'warmth' }
+                ]
+            },
+            {
+                id: 'mind',
+                icon: '🧠',
+                title: 'תרגילי מיינד',
+                subtitle: 'הרגעה קוגניטיבית',
+                category: 'mind',
+                items: [
+                    { id: 'bodyscan', icon: '🔍', name: 'סריקת גוף', desc: 'מודעות לכל חלקי הגוף', type: 'guided', guide: 'bodyscan' },
+                    { id: 'gratitude', icon: '🙏', name: 'הכרת תודה', desc: 'רשימת דברים טובים', type: 'gratitude' },
+                    { id: 'visual', icon: '🏖️', name: 'ויזואליזציה', desc: 'מקום בטוח ומרגיע', type: 'guided', guide: 'visualization' },
+                    { id: 'grounding', icon: '🌍', name: '5-4-3-2-1', desc: 'הארקה דרך החושים', type: 'guided', guide: 'grounding' },
+                    { id: 'laugh', icon: '😄', name: 'צחוק', desc: 'צחוק משחרר אנדורפינים', type: 'timer', duration: 60, message: 'צחק/י! גם צחוק מזויף הופך לאמיתי. פשוט התחל/י לצחוק!' }
+                ]
+            }
+        ];
+
+        // App state
+        // App state - defined at top of script
+
+        // Initialize app
+        function init() {
+            createParticles();
+            checkStreak();
+            updateStats();
+            renderTechniques();
+            setupTabs();
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#d4edda', '#e8e4f0', '#f8e8ee', '#e3f2fd'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 40 + 20 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = 15 + Math.random() * 10 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Check and update streak
+        function checkStreak() {
+            const today = new Date().toDateString();
+            if (appData.lastDate !== today) {
+                const lastDate = appData.lastDate ? new Date(appData.lastDate) : null;
+                const todayDate = new Date(today);
+                
+                if (lastDate) {
+                    const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                    if (diffDays > 1) {
+                        appData.streak = 0;
+                    }
+                }
+                
+                appData.todayCount = 0;
+                appData.lastDate = today;
+                saveData();
+            }
+        }
+
+        // Update stats display
+        function updateStats() {
+            document.getElementById('todayCount').textContent = appData.todayCount;
+            document.getElementById('totalMinutes').textContent = appData.totalMinutes;
+            document.getElementById('streak').textContent = appData.streak;
+        }
+
+        // Save data
+        function saveData() {
+            localStorage.setItem('parasympatheticData', JSON.stringify(appData));
+        }
+
+        // Render techniques
+        function renderTechniques(category = 'all') {
+            const container = document.getElementById('techniquesContainer');
+            container.innerHTML = '';
+
+            const filtered = category === 'all' ? techniques : techniques.filter(t => t.category === category);
+
+            filtered.forEach(tech => {
+                const card = document.createElement('div');
+                card.className = 'technique-card';
+                card.dataset.category = tech.category;
+                
+                card.innerHTML = `
+                    <div class="card-header" onclick="toggleCard(this.parentElement)">
+                        <div class="card-icon ${tech.category}">${tech.icon}</div>
+                        <div class="card-info">
+                            <div class="card-title">${tech.title}</div>
+                            <div class="card-subtitle">${tech.subtitle}</div>
+                        </div>
+                        <div class="card-arrow">▼</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="technique-list">
+                            ${tech.items.map(item => `
+                                <div class="technique-item">
+                                    <div class="technique-item-icon">${item.icon}</div>
+                                    <div class="technique-item-info">
+                                        <div class="technique-item-name">${item.name}</div>
+                                        <div class="technique-item-desc">${item.desc}</div>
+                                    </div>
+                                    <button class="fav-btn ${favorites.includes(item.id) ? 'active' : ''}" onclick="toggleFavorite('${item.id}', event)" title="הוסף למועדפים">★</button>
+                                    <button class="start-btn" onclick="startTechnique('${item.id}', '${item.type}', event)">התחל</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Toggle card expansion
+        function toggleCard(card) {
+            const wasExpanded = card.classList.contains('expanded');
+            document.querySelectorAll('.technique-card').forEach(c => c.classList.remove('expanded'));
+            if (!wasExpanded) {
+                card.classList.add('expanded');
+            }
+        }
+
+        // Setup tabs
+        function setupTabs() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderTechniques(btn.dataset.category);
+                });
+            });
+        }
+
+        // Start technique
+        function startTechnique(id, type, event) {
+            if (event) event.stopPropagation();
+            
+            const allItems = techniques.flatMap(t => t.items);
+            const item = allItems.find(i => i.id === id);
+            
+            if (!item) return;
+
+            switch (type) {
+                case 'breathing':
+                    openBreathingModal(item);
+                    break;
+                case 'timer':
+                    openTimerModal(item);
+                    break;
+                case 'guided':
+                    openGuidedModal(item);
+                    break;
+                case 'audio':
+                    openAudioModal(item);
+                    break;
+                case 'gratitude':
+                    openGratitudeModal();
+                    break;
+            }
+        }
+
+        // Open breathing modal
+        function openBreathingModal(item) {
+            const patterns = {
+                'box': { name: 'נשימת קופסה', ratio: '4-4-4-4', pattern: [4,4,4,4] },
+                '478': { name: 'נשימת 4-7-8', ratio: '4-7-8', pattern: [4,7,8,0] },
+                'long': { name: 'נשיפה ארוכה', ratio: '4-0-8', pattern: [4,0,8,0] },
+                'coherent': { name: 'נשימה קוהרנטית', ratio: '5-5', pattern: [5,0,5,0] }
+            };
+
+            const p = patterns[item.id] || patterns['box'];
+
+            document.getElementById('modalHeader').innerHTML = `
+                <div class="modal-icon card-icon breathing">${item.icon}</div>
+                <h2 class="modal-title">${item.name}</h2>
+                <p class="modal-subtitle">${item.desc}</p>
+            `;
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="breathing-exercise">
+                    <div class="breath-circle" id="breathCircle" onclick="doStartBreathing()" style="cursor:pointer">
+                        <span class="breath-text" id="breathText">לחצ/י להתחלה</span>
+                    </div>
+                    <div class="breath-timer" id="breathTimer">0:00</div>
+                    <div class="breath-instruction" id="breathInstruction">בחר/י דפוס נשימה</div>
+                    
+                    <div class="pattern-selector">
+                        <div class="pattern-option active" data-pattern="4,4,4,4">
+                            <div class="pattern-name">קופסה</div>
+                            <div class="pattern-ratio">4-4-4-4</div>
+                        </div>
+                        <div class="pattern-option" data-pattern="8,4,6,5">
+                            <div class="pattern-name">חדוה</div>
+                            <div class="pattern-ratio">8-4-6-5</div>
+                        </div>
+                        <div class="pattern-option" data-pattern="4,7,8,0">
+                            <div class="pattern-name">4-7-8</div>
+                            <div class="pattern-ratio">שאיפה-החזקה-נשיפה</div>
+                        </div>
+                        <div class="pattern-option" data-pattern="4,0,8,0">
+                            <div class="pattern-name">נשיפה ארוכה</div>
+                            <div class="pattern-ratio">4-8</div>
+                        </div>
+                        <div class="pattern-option" data-pattern="5,0,5,0">
+                            <div class="pattern-name">קוהרנטית</div>
+                            <div class="pattern-ratio">5-5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="breath-controls">
+                        <button class="breath-btn primary" id="breathStartBtn" onclick="doStartBreathing()">התחל</button>
+                        <button class="breath-btn secondary" onclick="closeModal()">סיום</button>
+                    </div>
+                    
+                    <div class="tips-section">
+                        <div class="tips-title">💡 טיפים</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> שב/י בנוחות עם גב ישר</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> נשום/י דרך האף</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> הרגש/י את הבטן עולה ויורדת</div>
+                    </div>
+                </div>
+            `;
+
+            // Setup pattern selection
+            document.querySelectorAll('.pattern-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.pattern-option').forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                });
+            });
+
+            openModal();
+        }
+
+        // Breathing state - defined at top of script
+
+        function toggleBreathing() {
+            if (breathingActive) {
+                stopBreathing();
+            } else {
+                startBreathing();
+            }
+        }
+
+        function startBreathing() {
+            breathingActive = true;
+            breathPhase = 0;
+            breathCount = 0;
+            totalBreathTime = 0;
+
+            const activePattern = document.querySelector('.pattern-option.active');
+            currentPattern = activePattern.dataset.pattern.split(',').map(Number);
+
+            const circle = document.getElementById('breathCircle');
+            circle.classList.remove('stopped');
+
+            document.getElementById('breathStartBtn').textContent = 'עצור';
+            runBreathingCycle();
+        }
+
+        function runBreathingCycle() {
+            if (!breathingActive) return;
+
+            const phases = ['שאיפה', 'עצירה', 'נשיפה', 'עצירה'];
+            const circle = document.getElementById('breathCircle');
+            const text = document.getElementById('breathText');
+            const instruction = document.getElementById('breathInstruction');
+            const timer = document.getElementById('breathTimer');
+
+            const duration = currentPattern[breathPhase];
+            
+            if (duration === 0) {
+                breathPhase = (breathPhase + 1) % 4;
+                runBreathingCycle();
+                return;
+            }
+
+            // הצג את השלב על העיגול
+            text.innerHTML = phases[breathPhase] + '<br><span style="font-size:2rem" id="countDown">' + duration + '</span>';
+            instruction.textContent = duration + ' שניות';
+            
+            // אנימציה דינמית לפי הזמן
+            circle.style.transition = 'transform ' + duration + 's ease-in-out';
+            
+            if (breathPhase === 0) {
+                // שאיפה - העיגול גדל
+                circle.classList.remove('exhale', 'hold');
+                circle.classList.add('inhale');
+                circle.style.transform = 'scale(1.2)';
+            } else if (breathPhase === 2) {
+                // נשיפה - העיגול קטן
+                circle.classList.remove('inhale', 'hold');
+                circle.classList.add('exhale');
+                circle.style.transform = 'scale(1)';
+            } else {
+                // עצירה - העיגול נשאר במקום
+                circle.classList.add('hold');
+            }
+
+            let count = duration;
+
+            breathingInterval = setInterval(() => {
+                count--;
+                totalBreathTime++;
+                
+                const mins = Math.floor(totalBreathTime / 60);
+                const secs = totalBreathTime % 60;
+                timer.textContent = mins + ':' + secs.toString().padStart(2, '0');
+
+                if (count > 0) {
+                    document.getElementById('countDown').textContent = count;
+                } else {
+                    clearInterval(breathingInterval);
+                    breathPhase = (breathPhase + 1) % 4;
+                    
+                    if (breathPhase === 0) {
+                        breathCount++;
+                    }
+                    
+                    runBreathingCycle();
+                }
+            }, 1000);
+        }
+
+        function stopBreathing() {
+            breathingActive = false;
+            clearInterval(breathingInterval);
+            
+            document.getElementById('breathStartBtn').textContent = 'התחל';
+            document.getElementById('breathText').innerHTML = 'סיום';
+            document.getElementById('breathInstruction').textContent = breathCount + ' מחזורי נשימה';
+            
+            const circle = document.getElementById('breathCircle');
+            circle.classList.remove('inhale', 'exhale', 'hold');
+            circle.classList.add('stopped');
+            circle.style.transform = 'scale(1)';
+
+            // Update stats
+            const minutes = Math.ceil(totalBreathTime / 60);
+            appData.todayCount++;
+            appData.totalMinutes += minutes;
+            appData.streak = Math.max(1, appData.streak);
+            appData.lastDate = new Date().toDateString();
+            saveData();
+            updateStats();
+        }
+
+        // Timer modal
+        function openTimerModal(item) {
+            document.getElementById('modalHeader').innerHTML = `
+                <div class="modal-icon card-icon vagus">${item.icon}</div>
+                <h2 class="modal-title">${item.name}</h2>
+                <p class="modal-subtitle">${item.desc}</p>
+            `;
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="timer-exercise">
+                    <div class="visualization">
+                        <div class="wave"></div>
+                        <span style="z-index:1;font-size:3rem">${item.icon}</span>
+                    </div>
+                    <div class="timer-display" id="timerDisplay">${formatTime(item.duration)}</div>
+                    <div class="timer-message">${item.message}</div>
+                    <div class="breath-controls">
+                        <button class="breath-btn primary" id="timerStartBtn" onclick="doStartTimer(${item.duration})">התחל</button>
+                        <button class="breath-btn secondary" onclick="closeModal()">סגור</button>
+                    </div>
+                </div>
+            `;
+
+            openModal();
+        }
+
+        // Timer state - defined at top of script
+
+        function toggleTimer(duration) {
+            if (timerActive) {
+                stopTimer();
+            } else {
+                startTimer(duration);
+            }
+        }
+
+        function startTimer(duration) {
+            timerActive = true;
+            timerSeconds = duration;
+            document.getElementById('timerStartBtn').textContent = 'עצור';
+
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                document.getElementById('timerDisplay').textContent = formatTime(timerSeconds);
+
+                if (timerSeconds <= 0) {
+                    stopTimer();
+                    document.getElementById('timerDisplay').textContent = '✓ סיימת!';
+                    
+                    appData.todayCount++;
+                    appData.totalMinutes += Math.ceil(duration / 60);
+                    appData.streak = Math.max(1, appData.streak);
+                    appData.lastDate = new Date().toDateString();
+                    saveData();
+                    updateStats();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            timerActive = false;
+            clearInterval(timerInterval);
+            document.getElementById('timerStartBtn').textContent = 'התחל';
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Guided modal
+        function openGuidedModal(item) {
+            const guides = {
+                'belly': {
+                    title: 'נשימה בטנית',
+                    steps: [
+                        'שכב/י בנוחות או שב/י עם גב ישר',
+                        'הנח/י יד אחת על הבטן ואחת על החזה',
+                        'שאפ/י לאט דרך האף - הבטן צריכה לעלות',
+                        'נשוף/י לאט דרך הפה - הבטן יורדת',
+                        'היד על החזה כמעט לא זזה',
+                        'המשיכ/י 2-3 דקות'
+                    ]
+                },
+                'ear': {
+                    title: 'עיסוי אוזניים',
+                    steps: [
+                        'שב/י בנוחות ונשום/י עמוק כמה פעמים',
+                        'התחל/י בתנוך האוזן - עסי/י בתנועות עיגוליות קטנות בין האצבע לאגודל',
+                        'עבור/י לאורך הקצה החיצוני של האוזן, מלמטה למעלה',
+                        'עסי/י את החלק הפנימי של האוזן בתנועות עדינות',
+                        'לחצ/י בעדינות על הנקודה שמאחורי האוזן (בגומה שבין האוזן לראש)',
+                        'עסי/י את הצוואר מאחורי האוזניים בתנועות עיגוליות',
+                        'משוך/י בעדינות את תנוך האוזן כלפי מטה',
+                        'סיימ/י בשפשוף עדין של כל האוזן',
+                        'המשיכ/י 2-3 דקות לכל אוזן'
+                    ]
+                },
+                'rock': {
+                    title: 'נדנוד עדין',
+                    steps: [
+                        'שב/י על כיסא או על הרצפה בתנוחה נוחה',
+                        'עצום/י עיניים ונשום/י עמוק',
+                        'התחל/י להתנדנד בעדינות קדימה ואחורה',
+                        'התנועה צריכה להיות איטית וזורמת - כמו תינוק בערסל',
+                        'אפשר גם להתנדנד מצד לצד',
+                        'הרגש/י איך התנועה מרגיעה את מערכת העצבים',
+                        'נדנוד הוא תנועה פרימיטיבית שמזכירה לגוף את הבטיחות של הרחם',
+                        'המשיכ/י 2-3 דקות או עד שתרגיש/י רגוע/ה',
+                        'ניתן לשלב עם נשימות עמוקות או זמזום שקט'
+                    ]
+                },
+                'stretch': {
+                    title: 'מתיחות איטיות',
+                    steps: [
+                        'הטה את הראש לצד ימין, החזק 30 שניות',
+                        'הטה את הראש לצד שמאל, החזק 30 שניות',
+                        'סובב/י את הכתפיים אחורה, 10 פעמים',
+                        'שלב/י ידיים ומתח/י קדימה',
+                        'עשה/י עיגולים עם הצוואר, לאט',
+                        'נשום/י עמוק בכל מתיחה'
+                    ]
+                },
+                'selfmassage': {
+                    title: 'עיסוי עצמי',
+                    steps: [
+                        'התחל/י בלישת הכתפיים - 1 דקה',
+                        'עסי/י את הצוואר מאחור בתנועות עיגוליות',
+                        'לחצ/י על הרקות בעדינות',
+                        'עסי/י את כפות הידיים',
+                        'סיימ/י בעיסוי הקרקפת'
+                    ]
+                },
+                'aroma': {
+                    title: 'ארומתרפיה',
+                    steps: [
+                        'בחר/י שמן מרגיע: לבנדר, קמומיל, או ורד',
+                        'טפטפ/י 2-3 טיפות על כף היד',
+                        'שפשפ/י את כפות הידיים יחד',
+                        'הקרב/י את הידיים לאף ושאפ/י עמוק',
+                        'נשום/י 5-10 נשימות עמוקות',
+                        'אפשר למרוח על הרקות ומאחורי האוזניים'
+                    ]
+                },
+                'warmth': {
+                    title: 'חום מרגיע',
+                    steps: [
+                        'הכינ/י משקה חם (תה, חלב, מים חמים עם לימון)',
+                        'החזק/י את הכוס בשתי ידיים',
+                        'הרגש/י את החום עובר לידיים',
+                        'שתה/י לאט, טעימה אחרי טעימה',
+                        'התכסה/י בשמיכה נעימה',
+                        'הרגש/י את החום עוטף אותך'
+                    ]
+                },
+                'bodyscan': {
+                    title: 'סריקת גוף',
+                    steps: [
+                        'שכב/י בנוחות ועצום/י עיניים',
+                        'התמקד/י בכפות הרגליים - הרגש/י כל תחושה',
+                        'עבור/י לרגליים, ברכיים, ירכיים',
+                        'המשיכ/י לבטן, חזה, כתפיים',
+                        'עבור/י לידיים, צוואר, פנים',
+                        'סיימ/י בקודקוד הראש',
+                        'הרגש/י את כל הגוף כאחד - רגוע ושלם'
+                    ]
+                },
+                'visualization': {
+                    title: 'ויזואליזציה',
+                    steps: [
+                        'עצום/י עיניים ונשום/י עמוק',
+                        'דמיינ/י מקום בטוח ומרגיע - חוף ים, יער, גן',
+                        'ראה/י את הצבעים, האור, הפרטים',
+                        'שמע/י את הצלילים של המקום',
+                        'הרגש/י את הטמפרטורה, את האוויר',
+                        'הרגש/י שלווה עמוקה במקום הזה',
+                        'כשתהיה/י מוכנ/ה, פתח/י עיניים לאט'
+                    ]
+                },
+                'grounding': {
+                    title: 'הארקה 5-4-3-2-1',
+                    steps: [
+                        '5 דברים שאת/ה רואה עכשיו',
+                        '4 דברים שאת/ה מרגיש/ה (מגע)',
+                        '3 דברים שאת/ה שומע/ת',
+                        '2 דברים שאת/ה מריח/ה',
+                        '1 דבר שאת/ה טועם/ת',
+                        'נשום/י עמוק - את/ה כאן ועכשיו'
+                    ]
+                },
+                'jacobson': {
+                    title: 'שחרור שרירים פרוגרסיבי (ג׳ייקובסון)',
+                    steps: [
+                        'שכב/י בנוחות ועצום/י עיניים',
+                        'כפות רגליים: כווצ/י את האצבעות חזק למשך 5 שניות, ואז שחרר/י',
+                        'שוקיים: מתח/י את שרירי השוק למשך 5 שניות, ואז שחרר/י',
+                        'ירכיים: לחצ/י את הברכיים זו לזו למשך 5 שניות, ואז שחרר/י',
+                        'בטן: מתח/י את שרירי הבטן למשך 5 שניות, ואז שחרר/י',
+                        'ידיים: אגרוף/י את הידיים חזק למשך 5 שניות, ואז שחרר/י',
+                        'זרועות: כופף/י את המרפקים ומתח/י את הזרועות למשך 5 שניות, ואז שחרר/י',
+                        'כתפיים: הרימ/י את הכתפיים לכיוון האוזניים למשך 5 שניות, ואז שחרר/י',
+                        'פנים: קמט/י את הפנים (עיניים, אף, פה) למשך 5 שניות, ואז שחרר/י',
+                        'הרגש/י את ההבדל בין מתח לשחרור',
+                        'נשום/י עמוק והרגש/י את כל הגוף רפוי ושלו'
+                    ]
+                },
+                'dance': {
+                    title: 'ריקוד חופשי',
+                    steps: [
+                        'בחר/י שיר שאת/ה אוהב/ת או פשוט תנועה בשקט',
+                        'עמוד/י במקום נוח עם מרחב לתנועה',
+                        'עצום/י עיניים אם נעים לך',
+                        'התחל/י לזוז - בלי כללים, בלי "נכון" או "לא נכון"',
+                        'תנ/י לגוף להוביל - הוא יודע מה הוא צריך',
+                        'נער/י, סובב/י, קפוץ/צי, זרום/י',
+                        'שחרר/י מתחים דרך התנועה',
+                        'אפשר לצעוק, לצחוק, להשמיע קולות',
+                        'המשיכ/י 3-5 דקות או עד שתרגיש/י שחרור',
+                        'סיימ/י בנשימות עמוקות ותודה לגוף'
+                    ]
+                }
+            };
+
+            const guide = guides[item.guide] || { title: item.name, steps: ['בצע/י את התרגיל בקצב שלך'] };
+
+            document.getElementById('modalHeader').innerHTML = `
+                <div class="modal-icon card-icon movement">${item.icon}</div>
+                <h2 class="modal-title">${guide.title}</h2>
+                <p class="modal-subtitle">${item.desc}</p>
+            `;
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="guided-exercise">
+                    ${guide.steps.map((step, i) => `
+                        <div class="tip-item" style="margin-bottom:15px;padding:15px;background:rgba(45,90,90,0.05);border-radius:12px">
+                            <span style="color:var(--gold);font-weight:600">${i+1}.</span>
+                            <span>${step}</span>
+                        </div>
+                    `).join('')}
+                    
+                    <div class="breath-controls" style="margin-top:30px">
+                        <button class="breath-btn primary" onclick="completeGuided()">סיימתי ✓</button>
+                        <button class="breath-btn secondary" onclick="closeModal()">סגור</button>
+                    </div>
+                </div>
+            `;
+
+            openModal();
+        }
+
+        function completeGuided() {
+            appData.todayCount++;
+            appData.totalMinutes += 2;
+            appData.streak = Math.max(1, appData.streak);
+            appData.lastDate = new Date().toDateString();
+            saveData();
+            updateStats();
+            closeModal();
+        }
+
+        // Audio modal
+        function openAudioModal(item) {
+            document.getElementById('modalHeader').innerHTML = `
+                <div class="modal-icon card-icon senses">${item.icon}</div>
+                <h2 class="modal-title">${item.name}</h2>
+                <p class="modal-subtitle">${item.desc}</p>
+            `;
+
+            const sounds = item.audioType === 'nature' ? [
+                { name: 'גלי ים', icon: '🌊' },
+                { name: 'גשם', icon: '🌧️' },
+                { name: 'יער', icon: '🌲' },
+                { name: 'נחל', icon: '💧' }
+            ] : [
+                { name: '432Hz', icon: '🎵' },
+                { name: '528Hz', icon: '✨' },
+                { name: 'פסנתר', icon: '🎹' },
+                { name: 'כינור', icon: '🎻' }
+            ];
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="audio-exercise">
+                    <div class="audio-viz">
+                        ${Array(12).fill().map((_, i) => `<div class="audio-bar" style="animation-delay:${i * 0.1}s"></div>`).join('')}
+                    </div>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:30px">
+                        ${sounds.map(s => `
+                            <div class="pattern-option" onclick="selectSound(this)">
+                                <div style="font-size:2rem;margin-bottom:5px">${s.icon}</div>
+                                <div class="pattern-name">${s.name}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="tips-section">
+                        <div class="tips-title">💡 המלצות</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> האזנה עם אוזניות משפרת את החוויה</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> 10-15 דקות מספיקות להרגעה</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> אפשר לשלב עם נשימות עמוקות</div>
+                    </div>
+                    
+                    <p style="text-align:center;color:var(--warm-gray);margin-top:20px;font-size:0.9rem">
+                        💡 חפש/י "432Hz relaxation" או "nature sounds" ביוטיוב או בספוטיפיי
+                    </p>
+                </div>
+            `;
+
+            openModal();
+        }
+
+        function selectSound(el) {
+            document.querySelectorAll('.pattern-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // Toggle favorite
+        function toggleFavorite(id, event) {
+            if (event) event.stopPropagation();
+            
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(id);
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            
+            // Update button state
+            const btn = event.target;
+            btn.classList.toggle('active');
+        }
+
+        // Gratitude modal
+        function openGratitudeModal() {
+            document.getElementById('modalHeader').innerHTML = `
+                <div class="modal-icon card-icon mind">🙏</div>
+                <h2 class="modal-title">הכרת תודה</h2>
+                <p class="modal-subtitle">על מה את/ה אסיר/ת תודה היום?</p>
+            `;
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="gratitude-exercise">
+                    <input type="text" class="gratitude-input" placeholder="כתוב/י משהו שאת/ה אסיר/ת תודה עליו..." id="gratitudeInput" onkeypress="if(event.key==='Enter')addGratitude()">
+                    
+                    <button class="breath-btn primary" style="width:100%;margin-bottom:20px" onclick="addGratitude()">הוסף ❤️</button>
+                    
+                    <ul class="gratitude-list" id="gratitudeList">
+                        ${gratitudeList.map((item, index) => `
+                            <li class="gratitude-item">
+                                <span class="gratitude-heart">❤️</span>
+                                <span style="flex:1">${item}</span>
+                                <button class="delete-gratitude-btn" onclick="doDeleteGratitude(${index})">✕</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    
+                    ${gratitudeList.length > 0 ? `
+                        <button class="reset-btn" onclick="clearGratitude()">נקה רשימה</button>
+                    ` : ''}
+                </div>
+            `;
+
+            openModal();
+        }
+
+        function addGratitude() {
+            const input = document.getElementById('gratitudeInput');
+            const text = input.value.trim();
+            
+            if (text) {
+                gratitudeList.unshift(text);
+                localStorage.setItem('gratitudeList', JSON.stringify(gratitudeList));
+                
+                const list = document.getElementById('gratitudeList');
+                const li = document.createElement('li');
+                li.className = 'gratitude-item';
+                li.innerHTML = `<span class="gratitude-heart">❤️</span><span>${text}</span>`;
+                list.insertBefore(li, list.firstChild);
+                
+                input.value = '';
+                
+                appData.todayCount++;
+                appData.streak = Math.max(1, appData.streak);
+                appData.lastDate = new Date().toDateString();
+                saveData();
+                updateStats();
+            }
+        }
+
+        function clearGratitude() {
+            if (confirm('לנקות את רשימת התודות?')) {
+                gratitudeList = [];
+                localStorage.setItem('gratitudeList', JSON.stringify(gratitudeList));
+                openGratitudeModal();
+            }
+        }
+
+        // Modal controls
+        function openModal() {
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Stop any running exercises
+            if (breathingActive) stopBreathing();
+            if (timerActive) stopTimer();
+        }
+
+        // Quick actions
+        function startSOSMode() {
+            const sosItem = { 
+                id: 'sos', 
+                icon: '🆘', 
+                name: 'הרגעה מהירה',
+                desc: 'נשימת חירום להרגעה מיידית',
+                pattern: [4,4,4,4]
+            };
+            openBreathingModal(sosItem);
+        }
+
+        function startQuickBreathing() {
+            const quickItem = {
+                id: 'quick',
+                icon: '🌬️',
+                name: 'הרגעה מהירה',
+                desc: 'נשימות עמוקות להרגעה מיידית',
+                pattern: [4,0,6,0]
+            };
+            openBreathingModal(quickItem);
+        }
+
+        function showSOSNumbers() {
+            document.getElementById('modalHeader').innerHTML = `
+                <div class="modal-icon card-icon sos" style="background: linear-gradient(135deg, #ff9a9e, #fad0c4);">🆘</div>
+                <h2 class="modal-title">מספרי טלפון חיוניים</h2>
+                <p class="modal-subtitle">לחצ/י להעתקה או לחיוג</p>
+            `;
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="sos-numbers">
+                    <a href="tel:1201" class="sos-item" onclick="copySosNumber('1201', event)">
+                        <div class="sos-info">
+                            <div class="sos-name">ער"ן - עזרה ראשונה נפשית</div>
+                            <div class="sos-number">1201</div>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:*2651" class="sos-item" onclick="copySosNumber('*2651', event)">
+                        <div class="sos-info">
+                            <div class="sos-name">סה"ר - סיוע והקשבה ברשת</div>
+                            <div class="sos-number">*2651</div>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:*6050" class="sos-item" onclick="copySosNumber('*6050', event)">
+                        <div class="sos-info">
+                            <div class="sos-name">בשביל החיים - מניעת התאבדות</div>
+                            <div class="sos-number">*6050</div>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:118" class="sos-item" onclick="copySosNumber('118', event)">
+                        <div class="sos-info">
+                            <div class="sos-name">קו חירום לנשים מוכות</div>
+                            <div class="sos-number">118</div>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:1202" class="sos-item" onclick="copySosNumber('1202', event)">
+                        <div class="sos-info">
+                            <div class="sos-name">קו לילדים ונוער</div>
+                            <div class="sos-number">1202</div>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:101" class="sos-item" onclick="copySosNumber('101', event)">
+                        <div class="sos-info">
+                            <div class="sos-name">מד"א - מגן דוד אדום</div>
+                            <div class="sos-number">101</div>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:100" class="sos-item" onclick="copySosNumber('100', event)">
+                        <div class="sos-info">
+                            <div class="sos-name">משטרה</div>
+                            <div class="sos-number">100</div>
+                        </div>
+                    </a>
+                    
+                    <div class="tips-section" style="margin-top: 20px;">
+                        <div class="tips-title">💚 זכור/י</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> לבקש עזרה זה סימן לחוזק, לא לחולשה</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> את/ה לא לבד - יש מי שיקשיב לך</div>
+                        <div class="tip-item"><span class="tip-icon">✨</span> כל רגע קשה עובר</div>
+                    </div>
+                </div>
+            `;
+
+            openModal();
+        }
+
+        function showFavorites() {
+            document.getElementById('modalHeader').innerHTML = `
+                <div class="modal-icon card-icon favorite" style="background: linear-gradient(135deg, var(--gold), #e6c566);">⭐</div>
+                <h2 class="modal-title">מועדפים</h2>
+                <p class="modal-subtitle">הטכניקות האהובות עליך</p>
+            `;
+
+            const allItems = techniques.flatMap(t => t.items);
+            const favoriteItems = allItems.filter(item => favorites.includes(item.id));
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="favorites-exercise">
+                    ${favoriteItems.length === 0 ? `
+                        <div style="text-align:center;padding:40px 20px;color:var(--warm-gray)">
+                            <div style="font-size:3rem;margin-bottom:15px">⭐</div>
+                            <p>עדיין אין מועדפים</p>
+                            <p style="font-size:0.85rem;margin-top:10px">לחצ/י על הכוכב ליד כל טכניקה כדי להוסיף למועדפים</p>
+                        </div>
+                    ` : `
+                        <div class="technique-list">
+                            ${favoriteItems.map(item => `
+                                <div class="technique-item">
+                                    <div class="technique-item-icon">${item.icon}</div>
+                                    <div class="technique-item-info">
+                                        <div class="technique-item-name">${item.name}</div>
+                                        <div class="technique-item-desc">${item.desc}</div>
+                                    </div>
+                                    <button class="delete-gratitude-btn" onclick="doRemoveFavorite('${item.id}')" title="הסר ממועדפים">✕</button>
+                                    <button class="start-btn" onclick="startTechnique('${item.id}', '${item.type}', event)">התחל</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `}
+                    
+                    <div class="breath-controls" style="margin-top:30px">
+                        <button class="breath-btn secondary" onclick="closeModal()">סגור</button>
+                    </div>
+                </div>
+            `;
+
+            openModal();
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modalOverlay') {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
